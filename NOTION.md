@@ -1,6 +1,6 @@
 # claude-video (skill grátis)
 
-*Texto da página do Notion. Troque https://github.com/Felpborges/claude-video pelo link real.*
+*Texto da página do Notion, pronto para colar.*
 
 ---
 
