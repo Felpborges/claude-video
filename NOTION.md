@@ -1,6 +1,6 @@
 # claude-video (skill grátis)
 
-*Texto da página do Notion. Troque <URL DO REPOSITÓRIO> pelo link real.*
+*Texto da página do Notion. Troque https://github.com/Felpborges/claude-video pelo link real.*
 
 ---
 
@@ -8,7 +8,7 @@ Faça motion graphics com cara de estúdio no Claude Code, em português. Escolh
 vídeos reais, responda 5 perguntas e receba o seu MP4. Grátis, no plano normal do Claude.
 
 **Instalar:** cole este link numa conversa do Claude Code e diga "instala essa skill":
-<URL DO REPOSITÓRIO>
+https://github.com/Felpborges/claude-video
 
 ---
 

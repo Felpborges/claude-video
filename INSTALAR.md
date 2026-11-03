@@ -9,7 +9,7 @@ Instale esta skill na máquina da pessoa. Faça exatamente isto, nesta ordem, fa
 
 1. Confira se já existe `~/.claude/skills/claude-video/`. Se existir, pergunte se pode substituir; só siga com um sim.
 2. Clone o repositório para lá:
-   `git clone <url deste repositório> ~/.claude/skills/claude-video`
+   `git clone https://github.com/Felpborges/claude-video ~/.claude/skills/claude-video`
    Se `git` não existir, baixe o ZIP do repositório, descompacte e mova a pasta para `~/.claude/skills/claude-video`
    (o arquivo `~/.claude/skills/claude-video/SKILL.md` precisa existir no fim).
 3. Dê permissão de execução aos scripts: `chmod +x ~/.claude/skills/claude-video/scripts/*.sh`.
