@@ -1,0 +1,278 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Galeria de estilos · Claude Video</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@500&display=swap" />
+<style>
+  :root {
+    --bg: #0B0B0C; --surface: #141416; --line: rgba(255,255,255,0.08); --line2: rgba(255,255,255,0.14);
+    --text: #EDEAE3; --mute: #8F8B83; --faint: #5E5B55; --accent: #D97757; --ivory: #F3EFE6;
+    --serif: 'Instrument Serif', Georgia, serif; --sans: 'Inter', system-ui, sans-serif; --mono: 'JetBrains Mono', ui-monospace, monospace;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { background: var(--bg); }
+  body { background: var(--bg); color: var(--text); font-family: var(--sans); -webkit-font-smoothing: antialiased; min-height: 100vh; }
+  button { font: inherit; color: inherit; background: none; border: 0; cursor: pointer; }
+
+  /* barra do topo */
+  .bar { position: sticky; top: 0; z-index: 10; display: flex; align-items: center; justify-content: space-between; gap: 24px;
+    padding: 18px 64px; background: rgba(11,11,12,0.82); backdrop-filter: saturate(140%) blur(14px); -webkit-backdrop-filter: saturate(140%) blur(14px);
+    border-bottom: 1px solid var(--line); }
+  .mark { font-family: var(--serif); font-size: 26px; letter-spacing: -0.01em; white-space: nowrap; }
+  .mark i { color: var(--accent); }
+  .controls { display: flex; gap: 12px; flex-wrap: wrap; justify-content: flex-end; }
+  .seg { display: inline-flex; padding: 4px; border-radius: 999px; background: rgba(255,255,255,0.05); border: 1px solid var(--line); }
+  .seg button { padding: 8px 16px; border-radius: 999px; font-size: 13px; font-weight: 500; color: var(--mute); transition: color .2s, background .2s; white-space: nowrap; }
+  .seg button:hover { color: var(--text); }
+  .seg button.on { background: var(--ivory); color: #111; }
+  .seg button:disabled { opacity: 0.35; cursor: default; }
+
+  /* herói */
+  .wrap { max-width: 1680px; margin: 0 auto; padding: 0 64px 120px; }
+  .hero { padding: 104px 0 72px; display: grid; grid-template-columns: 1.3fr 1fr; gap: 64px; align-items: end; border-bottom: 1px solid var(--line); margin-bottom: 64px; }
+  .hero h1 { font-family: var(--serif); font-weight: 400; font-size: clamp(64px, 8vw, 128px); line-height: 0.92; letter-spacing: -0.025em; }
+  .hero h1 i { color: var(--accent); }
+  .hero p { font-size: 18px; line-height: 1.6; color: var(--mute); max-width: 560px; }
+  .hero p b { color: var(--text); font-weight: 500; }
+  .steps { display: flex; gap: 32px; margin-top: 28px; font-size: 14px; color: var(--mute); flex-wrap: wrap; }
+  .steps span { display: flex; align-items: center; gap: 10px; }
+  .steps em { font-style: normal; font-family: var(--mono); font-size: 12px; width: 26px; height: 26px; border-radius: 50%; border: 1px solid var(--line2);
+    display: inline-flex; align-items: center; justify-content: center; color: var(--text); }
+
+  /* cabeçalhos de família */
+  .group { margin-bottom: 96px; }
+  .ghead { display: flex; align-items: baseline; justify-content: space-between; gap: 24px; margin-bottom: 32px; }
+  .ghead h2 { font-family: var(--serif); font-weight: 400; font-size: 44px; letter-spacing: -0.015em; }
+  .ghead p { color: var(--mute); font-size: 15px; max-width: 520px; text-align: right; line-height: 1.5; }
+
+  /* tiles */
+  .grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 64px 40px; }
+  .tile { display: flex; flex-direction: column; gap: 20px; }
+  .screen { position: relative; aspect-ratio: 16 / 9; border-radius: 18px; overflow: hidden; background: var(--surface);
+    box-shadow: 0 0 0 1px var(--line), 0 30px 60px -30px rgba(0,0,0,0.8); transition: transform .5s cubic-bezier(.2,.8,.2,1); }
+  .screen.has-video { cursor: zoom-in; }
+  .tile:hover .screen { transform: translateY(-4px); }
+  /* 1:1 e 9:16 cabem inteiros no tile: contain sobre fundo escuro, nunca recorta */
+  .screen video { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: contain; background: var(--surface); display: block; transition: opacity .18s linear; }
+  .screen .only-name { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; padding: 32px; text-align: center;
+    font-family: var(--serif); font-size: 40px; line-height: 1.05; letter-spacing: -0.01em; color: var(--mute); }
+  .screen .seg { position: absolute; left: 16px; top: 16px; z-index: 2; background: rgba(12,12,13,0.55); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); border-color: rgba(255,255,255,0.12); }
+  .screen .seg button { padding: 7px 14px; font-size: 12.5px; color: rgba(255,255,255,0.75); }
+  .screen .seg button.on { background: rgba(243,239,230,0.95); color: #111; }
+  .chips { position: absolute; right: 16px; top: 16px; z-index: 2; display: flex; gap: 8px; }
+  .chip { padding: 7px 12px; border-radius: 999px; font-size: 12px; color: rgba(255,255,255,0.8); font-family: var(--mono);
+    background: rgba(12,12,13,0.55); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); border: 1px solid rgba(255,255,255,0.12); }
+  .meta { display: flex; align-items: flex-start; justify-content: space-between; gap: 24px; }
+  .meta h3 { font-family: var(--serif); font-weight: 400; font-size: 32px; line-height: 1.05; letter-spacing: -0.01em; }
+  .meta .chamada { margin-top: 8px; color: var(--mute); font-size: 14.5px; line-height: 1.45; }
+  .meta .specs { display: flex; gap: 14px; margin-top: 12px; font-family: var(--mono); font-size: 12px; color: var(--faint); letter-spacing: 0.02em; flex-wrap: wrap; }
+  .use { flex: none; display: inline-flex; align-items: center; gap: 10px; padding: 13px 20px; border-radius: 999px; background: var(--ivory); color: #111;
+    font-size: 14px; font-weight: 600; transition: transform .2s, background .2s; white-space: nowrap; }
+  .use:hover { transform: translateY(-1px); background: #fff; }
+  .use.done { background: var(--accent); color: #fff; }
+  .use svg { width: 15px; height: 15px; }
+
+  /* referência própria */
+  .own { margin-top: 24px; padding: 48px; border-radius: 20px; border: 1px dashed var(--line2); display: flex; justify-content: space-between; align-items: center; gap: 32px; }
+  .own h2 { font-family: var(--serif); font-weight: 400; font-size: 40px; }
+  .own p { color: var(--mute); font-size: 15.5px; line-height: 1.6; max-width: 640px; margin-top: 8px; }
+  .own .use { background: transparent; color: var(--text); box-shadow: inset 0 0 0 1px var(--line2); }
+  footer { color: var(--faint); font-size: 13px; padding-top: 64px; }
+
+  /* lightbox + aviso */
+  #big { position: fixed; inset: 0; z-index: 30; background: rgba(5,5,6,0.94); display: none; align-items: center; justify-content: center; padding: 48px; }
+  #big video { max-width: 92vw; max-height: 88vh; border-radius: 14px; box-shadow: 0 0 0 1px var(--line); background: var(--surface); }
+  #toast { position: fixed; left: 50%; bottom: 40px; transform: translate(-50%, 24px); opacity: 0; z-index: 40; padding: 14px 22px; border-radius: 999px;
+    background: var(--ivory); color: #111; font-size: 14.5px; font-weight: 500; transition: opacity .25s, transform .35s cubic-bezier(.2,.8,.2,1); pointer-events: none; }
+  #toast.on { opacity: 1; transform: translate(-50%, 0); }
+  #toast b { font-family: var(--mono); font-weight: 500; font-size: 13.5px; }
+
+  @media (max-width: 1100px) {
+    .grid { grid-template-columns: 1fr; }
+    .hero { grid-template-columns: 1fr; gap: 28px; padding-top: 64px; }
+    .bar, .wrap { padding-left: 24px; padding-right: 24px; }
+    .ghead { flex-direction: column; } .ghead p { text-align: left; }
+    .own { flex-direction: column; align-items: flex-start; padding: 32px; }
+  }
+  @media (max-width: 640px) {
+    .meta { flex-direction: column; }
+    .bar { flex-wrap: wrap; gap: 10px; padding: 12px 16px; } .controls { width: 100%; justify-content: flex-start; }
+    .wrap { padding-left: 16px; padding-right: 16px; } .hero h1 { font-size: 64px; } .ghead h2 { font-size: 36px; }
+  }
+</style>
+</head>
+<body>
+<div class="bar">
+  <div class="mark">Claude <i>Video</i></div>
+  <div class="controls">
+    <div class="seg" id="every"><button data-v="graphic" class="on">Tudo em grafismo</button><button data-v="media">Tudo com mídia real</button></div>
+  </div>
+</div>
+
+<div class="wrap">
+  <section class="hero">
+    <h1>Galeria de <i>estilos.</i></h1>
+    <div>
+      <p>Cada tile é um vídeo de verdade, feito pelo Claude em código. Quando um estilo tem <b>versão com mídia real</b>, vire o tile para ver o mesmo design com fotos e filmagens dentro.
+        Ache um que você goste, aperte <b>Usar este estilo</b> e cole de volta no Claude Code.</p>
+      <div class="steps"><span><em>1</em>Escolha um estilo</span><span><em>2</em>Responda 5 perguntas</span><span><em>3</em>Aprove 3 frames e receba o vídeo</span></div>
+    </div>
+  </section>
+
+  <div id="familias"></div>
+
+  <section class="own">
+    <div>
+      <h2>Tem a sua própria referência?</h2>
+      <p>Cole de 1 a 3 links ou imagens no Claude Code. O Claude estuda como elas foram feitas e escreve um estilo novo para você.</p>
+    </div>
+    <button class="use" data-copy="minha própria referência">Usar minha própria referência</button>
+  </section>
+  <footer>Feito com HyperFrames e GSAP. Clique em qualquer vídeo para ver em tela grande. Todo estilo daqui é livre para usar.</footer>
+</div>
+
+<div id="big"><video controls loop playsinline></video></div>
+<div id="toast"></div>
+
+<script src="estilos.js"></script>
+<script>
+const COPY_ICON = '<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="5" y="5" width="9" height="9" rx="2"/><path d="M11 5V3.5A1.5 1.5 0 0 0 9.5 2h-6A1.5 1.5 0 0 0 2 3.5v6A1.5 1.5 0 0 0 3.5 11H5"/></svg>';
+const CHECK_ICON = '<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 8.5l3.2 3L13 4.5"/></svg>';
+const big = document.getElementById('big'), bv = big.querySelector('video'), toast = document.getElementById('toast');
+const tiles = [];
+let toastTimer;
+
+function copyText(text) {
+  const fallback = () => { const t = document.createElement('textarea'); t.value = text; document.body.appendChild(t); t.select();
+    try { document.execCommand('copy'); } catch (e) {} t.remove(); };
+  if (navigator.clipboard && window.isSecureContext) return navigator.clipboard.writeText(text).catch(fallback);
+  fallback(); return Promise.resolve();
+}
+function say(html) { toast.innerHTML = html; toast.classList.add('on'); clearTimeout(toastTimer); toastTimer = setTimeout(() => toast.classList.remove('on'), 2600); }
+function wireUse(btn, id) {
+  btn.innerHTML = COPY_ICON + (btn.textContent.trim() || 'Usar este estilo');
+  const label = btn.textContent;
+  btn.onclick = () => copyText(id).then(() => {
+    btn.classList.add('done'); btn.innerHTML = CHECK_ICON + 'Copiado';
+    say(`Copiado <b>${id}</b>. Cole no Claude Code.`);
+    setTimeout(() => { btn.classList.remove('done'); btn.innerHTML = COPY_ICON + label; }, 1800);
+  });
+}
+function esc(s) { return String(s).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c])); }
+function segundos(n) { return String(n).replace('.', ',') + ' s'; }
+
+// Quais vídeos existem de fato? A listagem de videos/ (um GET que responde 200) evita pedir arquivos que não
+// estão lá, então um vídeo ainda não renderizado não gera erro no console. Sem servidor, tenta direto.
+async function listarVideos() {
+  try {
+    const r = await fetch('videos/', { cache: 'no-cache' });
+    if (!r.ok) return null;
+    const html = await r.text();
+    const found = new Set();
+    for (const m of html.matchAll(/href="([^"]+\.mp4)"/g)) found.add(decodeURIComponent(m[1].split('/').pop()));
+    return found;
+  } catch (e) { return null; }
+}
+
+function montar(existe) {
+  const have = f => existe ? existe.has(f) : true;
+  const familias = [];
+  ESTILOS.forEach(E => { if (!familias.includes(E.familia)) familias.push(E.familia); });
+  const host = document.getElementById('familias');
+  familias.forEach(f => {
+    const sec = document.createElement('section'); sec.className = 'group';
+    const n = ESTILOS.filter(E => E.familia === f).length;
+    sec.innerHTML = `<div class="ghead"><h2>${esc(f)}</h2><p>${n} ${n === 1 ? 'estilo' : 'estilos'}</p></div><div class="grid"></div>`;
+    host.appendChild(sec);
+    sec.querySelector('.grid').dataset.familia = f;
+  });
+
+  ESTILOS.forEach(E => {
+    const t = document.createElement('article'); t.className = 'tile';
+    t.innerHTML = `<div class="screen"></div>
+      <div class="meta"><div><h3>${esc(E.nome)}</h3><div class="chamada">${esc(E.chamada)}</div>
+      <div class="specs"><span>${segundos(E.duracao)}</span><span>${esc(E.formato)}</span>${E.loop ? '<span>loop</span>' : ''}<span>${esc(E.id)}</span></div></div>
+      <button class="use">Usar este estilo</button></div>`;
+    const screen = t.querySelector('.screen');
+    wireUse(t.querySelector('.use'), E.id);
+    const files = { graphic: `${E.id}.mp4`, media: `${E.id}-media.mp4` };
+    const temMedia = !!E.media && have(files.media);
+    const temVideo = have(files.graphic);
+
+    const chips = document.createElement('div'); chips.className = 'chips';
+    chips.innerHTML = `<span class="chip">${esc(E.formato)}</span>${E.loop ? '<span class="chip">loop</span>' : ''}`;
+    screen.appendChild(chips);
+
+    if (!temVideo) {
+      // ainda sem vídeo renderizado: o tile mostra só o nome
+      const only = document.createElement('div'); only.className = 'only-name'; only.textContent = E.nome;
+      screen.appendChild(only);
+      tiles.push({ E, show: () => {}, t });
+      document.querySelector(`.grid[data-familia="${CSS.escape(E.familia)}"]`).appendChild(t);
+      return;
+    }
+    screen.classList.add('has-video');
+
+    let sw = null;
+    if (temMedia) {
+      sw = document.createElement('div'); sw.className = 'seg';
+      sw.innerHTML = '<button data-v="graphic" class="on">Grafismo</button><button data-v="media">Com mídia real</button>';
+      screen.appendChild(sw);
+    }
+
+    // Dois vídeos empilhados tocam em sincronia. Virar só troca qual deles você vê, então o loop nunca reinicia.
+    const vids = {}; let cur = null, visible = false;
+    function make(kind) {
+      const v = document.createElement('video');
+      Object.assign(v, { src: 'videos/' + files[kind], muted: true, loop: true, playsInline: true, preload: 'auto' });
+      v.setAttribute('muted', ''); v.style.opacity = 0;
+      v.onclick = () => { bv.src = v.currentSrc || ('videos/' + files[kind]); big.style.display = 'flex'; bv.currentTime = v.currentTime; bv.muted = true; bv.play().catch(() => {}); };
+      v.onerror = () => { if (kind === 'media' && sw) { sw.querySelector('[data-v=media]').disabled = true; } };
+      screen.insertBefore(v, screen.firstChild); vids[kind] = v;
+      if (visible) v.play().catch(() => {});
+      return v;
+    }
+    function show(kind) {
+      if (kind === 'media' && !temMedia) return;
+      const next = vids[kind] || make(kind);
+      if (cur && cur !== next && next.readyState >= 1) next.currentTime = cur.currentTime % (next.duration || 1e9);
+      Object.values(vids).forEach(v => { v.style.opacity = v === next ? 1 : 0; v.style.pointerEvents = v === next ? 'auto' : 'none'; });
+      cur = next;
+      if (sw) sw.querySelectorAll('button').forEach(b => b.classList.toggle('on', b.dataset.v === kind));
+    }
+    if (sw) sw.querySelectorAll('button').forEach(b => b.onclick = e => { e.stopPropagation(); show(b.dataset.v); });
+    show('graphic');
+    if (temMedia) make('media');
+    // mantém o gêmeo escondido travado no que você está vendo
+    (function lock() {
+      if (cur && visible) Object.values(vids).forEach(v => {
+        if (v === cur || v.readyState < 2) return;
+        const target = cur.currentTime % (v.duration || 1e9);
+        if (Math.abs(v.currentTime - target) > 0.12) v.currentTime = target;
+        if (v.paused) v.play().catch(() => {});
+      });
+      requestAnimationFrame(lock);
+    })();
+    new IntersectionObserver(es => es.forEach(e => {
+      visible = e.isIntersecting;
+      Object.values(vids).forEach(v => visible ? v.play().catch(() => {}) : v.pause());
+    }), { rootMargin: '300px' }).observe(t);
+    tiles.push({ E, show, temMedia, t });
+    document.querySelector(`.grid[data-familia="${CSS.escape(E.familia)}"]`).appendChild(t);
+  });
+}
+
+wireUse(document.querySelector('.own .use'), 'minha própria referência');
+big.onclick = e => { if (e.target === big) { bv.pause(); big.style.display = 'none'; } };
+document.addEventListener('keydown', e => { if (e.key === 'Escape') { bv.pause(); big.style.display = 'none'; } });
+document.querySelectorAll('#every button').forEach(b => b.onclick = () => {
+  document.querySelectorAll('#every button').forEach(x => x.classList.toggle('on', x === b));
+  tiles.forEach(x => x.show(b.dataset.v === 'media' && x.temMedia ? 'media' : 'graphic'));
+});
+listarVideos().then(montar);
+</script>
+</body>
+</html>
