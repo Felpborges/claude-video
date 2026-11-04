@@ -5,11 +5,11 @@ window.ESTILOS = [
   { id: 'editor-ia',           nome: 'Editor com cursor de IA',        familia: 'Apps com cursor de IA',  chamada: 'Uma IA edita o vídeo dentro do editor e o vídeo toma a tela', duracao: 18,   formato: '16:9', media: false },
   { id: 'app-de-design',       nome: 'App de design com cursor de IA', familia: 'Apps com cursor de IA',  chamada: 'O cursor monta uma thumbnail num app de design',            duracao: 15,   formato: '16:9', media: false },
   { id: 'app-de-motion',       nome: 'App de motion com cursor de IA', familia: 'Apps com cursor de IA',  chamada: 'Curvas e keyframes mexidos por uma IA',                      duracao: 16,   formato: '16:9', media: false },
-  // Desenho que vira real
-  { id: 'aviao-que-vira-foto', nome: 'Avião que vira foto',            familia: 'Desenho que vira real',  chamada: 'Um avião desenhado em código que vira foto real',           duracao: 22,   formato: '16:9', media: false },
-  { id: 'festival-da-lua',     nome: 'Festival da lua',                familia: 'Desenho que vira real',  chamada: 'Nanquim e pincel seco; o desenho vira foto e anoitece',       duracao: 28,   formato: '16:9', media: false },
-  { id: 'porto-de-nova-york',  nome: 'Porto de Nova York',             familia: 'Desenho que vira real',  chamada: 'Pôr do sol, barco e as luzes acendendo de baixo pra cima',   duracao: 30,   formato: '16:9', media: false },
-  { id: 'barco-e-montanha',    nome: 'Barco e montanha',               familia: 'Desenho que vira real',  chamada: 'Camadas de papel, barco e montanha, versão premium',         duracao: 16,   formato: '16:9', media: false },
+  // Cenas e paisagens
+  { id: 'aviao-em-codigo',     nome: 'Avião em código',                familia: 'Cenas e paisagens',      chamada: 'Um avião 3D feito só com código vira ilustração e decola',  duracao: 22,   formato: '16:9', media: false },
+  { id: 'festival-da-lua',     nome: 'Festival da lua',                familia: 'Cenas e paisagens',      chamada: 'Nanquim e pincel seco; o desenho vira foto e anoitece',       duracao: 28,   formato: '16:9', media: false },
+  { id: 'porto-de-nova-york',  nome: 'Porto de Nova York',             familia: 'Cenas e paisagens',      chamada: 'Pôr do sol, barco e as luzes acendendo de baixo pra cima',   duracao: 30,   formato: '16:9', media: false },
+  { id: 'barco-e-montanha',    nome: 'Barco e montanha',               familia: 'Cenas e paisagens',      chamada: 'Camadas de papel, barco e montanha, versão premium',         duracao: 16,   formato: '16:9', media: false },
   // Lápis, giz e caneta
   { id: 'dirigivel-a-lapis',   nome: 'Dirigível a lápis',              familia: 'Lápis, giz e caneta',    chamada: 'Mascote em expedição a lápis que vira pintura de pôr do sol', duracao: 28.6, formato: '1:1',  media: false },
   { id: 'giz-de-cera',         nome: 'Giz de cera',                    familia: 'Lápis, giz e caneta',    chamada: 'Giz e canetinha no papel-cartão',                            duracao: 5,    formato: '16:9', media: false, loop: true },

@@ -21,8 +21,14 @@ const load = (src) => new Promise((ok, no) => { const i = new Image(); i.onload 
 const tela = () => { const c = document.createElement('canvas'); c.width = 1920; c.height = 1080; return c; };
 
 export async function createReal(bg, fg, soDesenho = false) {
-  const nomes = ['fundo.jpg', 'corpo.png', 'perto.png', 'pas.png', 'sombra.png', 'des-fundo.jpg', 'des-corpo.png', 'des-perto.png', 'des-linha-corpo.png', 'des-linha-perto.png', 'des-pas.png'];
-  const [fundo, corpo, perto, pas, sombra, dFundo, dCorpo, dPerto, lCorpo, lPerto, dPas] = await Promise.all(nomes.map((n) => load('assets/reais/' + n)));
+  // Só desenho: as camadas da foto real (fundo, corpo, perto, pas) não existem mais neste projeto; só a sombra e as camadas desenhadas.
+  const nomes = soDesenho
+    ? ['sombra.png', 'des-fundo.jpg', 'des-corpo.png', 'des-perto.png', 'des-pas.png']
+    : ['fundo.jpg', 'corpo.png', 'perto.png', 'pas.png', 'sombra.png', 'des-fundo.jpg', 'des-corpo.png', 'des-perto.png', 'des-linha-corpo.png', 'des-linha-perto.png', 'des-pas.png'];
+  const img = {};
+  await Promise.all(nomes.map(async (n) => { img[n] = await load('assets/reais/' + n); }));
+  const fundo = img['fundo.jpg'], corpo = img['corpo.png'], perto = img['perto.png'], pas = img['pas.png'], sombra = img['sombra.png'];
+  const dFundo = img['des-fundo.jpg'], dCorpo = img['des-corpo.png'], dPerto = img['des-perto.png'], lCorpo = img['des-linha-corpo.png'], lPerto = img['des-linha-perto.png'], dPas = img['des-pas.png'];
   const b = bg.getContext('2d'), f = fg.getContext('2d');
 
   // Faixa dupla espelhada: emenda invisível para a câmera correr sem fim
@@ -32,9 +38,9 @@ export async function createReal(bg, fg, soDesenho = false) {
     x.drawImage(img, 0, 0); x.save(); x.translate(c.width, 0); x.scale(-1, 1); x.drawImage(img, 0, 0); x.restore();
     return c;
   }
-  const REAL = { tile: espelhada(fundo), corpo, perto, pas, rastro: 1, desenho: false };
+  const REAL = soDesenho ? null : { tile: espelhada(fundo), corpo, perto, pas, rastro: 1, desenho: false };
   const DES = { tile: espelhada(dFundo), corpo: dCorpo, perto: dPerto, pas: dPas, rastro: .45, desenho: true };
-  const LINHA = { corpo: lCorpo, perto: lPerto };
+  const LINHA = soDesenho ? null : { corpo: lCorpo, perto: lPerto };
 
   // Rotação da hélice integrada no tempo: ela nunca salta
   const rpm = (t) => 88 * ramp(t, T.spool, T.roll + .4, (x) => x * x);
