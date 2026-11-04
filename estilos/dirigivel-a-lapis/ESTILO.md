@@ -16,7 +16,7 @@ Peça de partida: projeto/index.html
 
 # Perícia: desenho a lápis que vira pintura (referência do X)
 
-*Feita em 3 de novembro de 2026; validado pelo Felipe no mesmo dia. Referência: post de @mickeyxfriedman no X (status 2115932308138287552), baixado em `skill-propria/07-mascote-aventura/ref/ref.mp4` (28,6 s, 1600 × 1600, 30 fps, sem áudio). O autor diz que desenhou tudo "com Opus 5.5 em JavaScript puro", sem gerador de imagem.*
+*Feita em 3 de novembro de 2026; validado pelo Felipe no mesmo dia. Referência: post de @mickeyxfriedman no X (status 2115932308138287552), baixado para a perícia (28,6 s, 1600 × 1600, 30 fps, sem áudio). O autor diz que desenhou tudo "com Opus 5.5 em JavaScript puro", sem gerador de imagem.*
 
 **Como renderizar de novo:** dentro de `projeto/`, `npx hyperframes@0.8.181 render . -o final.mp4 -q high`. A cena inteira (geometria, cores e ordem do lápis) está em `cena.js`; o relógio, o traço, a câmera, o lápis e a onda de cor estão em `motor.js`. A mesma geometria serve para o traço e para a pintura.
 

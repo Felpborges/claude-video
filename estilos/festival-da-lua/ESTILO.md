@@ -18,7 +18,7 @@ Peça de partida: projeto/index.html
 
 # Perícia: o festival da lua em nanquim (referência do Skillry)
 
-*Validado pelo Felipe em 3 de novembro de 2026, em duas versões. Referência: "Tried Opus 5.5 to explain the Mid-Autumn Festival", de @AmberPromptai no X (status 2103793821012345137), listada no skillry.dev: 47,4 s, 960 × 540, 30 fps, com música, feita em canvas. O filme é dele; aqui só medimos. A perícia completa, com a versão de 47 s e as medições, está em `skill-propria/10-festival-da-lua/pericia.md`.*
+*Validado pelo Felipe em 3 de novembro de 2026, em duas versões. Referência: "Tried Opus 5.5 to explain the Mid-Autumn Festival", de @AmberPromptai no X (status 2103793821012345137), listada no skillry.dev: 47,4 s, 960 × 540, 30 fps, com música, feita em canvas. O filme é dele; aqui só medimos. A perícia completa, com a versão de 47 s e as medições, fica na pasta de trabalho original, fora desta skill.*
 
 ## Pedido do Felipe
 
@@ -74,4 +74,4 @@ Dentro de `projeto/` ou `projeto-realista/`: `npx hyperframes@0.8.181 render . -
 ## Pontos em aberto
 
 - As três fotos da versão realista foram geradas por IA no Higgsfield: conferir os termos de uso antes de distribuir os arquivos de imagem na skill dos alunos.
-- A versão de 47,4 s (com círculo de pincel e bolo da lua) ficou só em `skill-propria/10-festival-da-lua/proj/`; ela não foi validada como versão separada.
+- A versão de 47,4 s (com círculo de pincel e bolo da lua) ficou só na pasta de trabalho original, fora desta skill; ela não foi validada como versão separada.

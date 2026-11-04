@@ -36,14 +36,14 @@ Um cursor mexe em um painel e um avião feito só com código responde; um contr
 - **3D:** Three.js com geometria própria do A-29 (`plane.js`), sem modelo baixado.
 - **Real:** uma foto real do A-29B 5950 da FAB, recortada em camadas (corpo, asa de perto, pás, sombra e fundo limpo). Hélice, rodas e borrão de velocidade são feitos em código.
 - **Desenho da decolagem:** tirado da própria foto (`preparo/desenho.py`), por isso ocupa exatamente o mesmo lugar do real.
-- **Sem imagem gerada por IA.** As tentativas com o Higgsfield ficaram em `skill-propria/04-aviao/descartado-higgsfield/`.
+- **Sem imagem gerada por IA.** As tentativas com o Higgsfield foram descartadas e não estão nesta skill.
 
 ## Resultado medido
 22 s, 1920 x 1080, 30 fps, sem áudio. Variação de ritmo (pico ÷ mediana) 7,6x; 33% do tempo em quase-parada.
 
 
 ## Para renderizar de novo
-Dentro de `projeto/`: `npx hyperframes@0.8.181 render . -o final.mp4 -q high` (versão real) ou `npx hyperframes@0.8.181 render . -c index-desenho.html -o final.mp4 -q high` (versão só desenho). As duas usam o mesmo código; a diferença é o atributo `data-variante="desenho"` no `index-desenho.html`. O projeto foi testado renderizando as duas e comparando quadro a quadro: idênticas às salvas. Os scripts de `preparo/` recriam as camadas a partir da foto; os caminhos dentro deles são os da pasta de trabalho (`skill-propria/04-aviao/trab/`).
+Dentro de `projeto/`: `npx hyperframes@0.8.181 render . -o final.mp4 -q high` (versão real) ou `npx hyperframes@0.8.181 render . -c index-desenho.html -o final.mp4 -q high` (versão só desenho). As duas usam o mesmo código; a diferença é o atributo `data-variante="desenho"` no `index-desenho.html`. O projeto foi testado renderizando as duas e comparando quadro a quadro: idênticas às salvas. Os scripts de `preparo/` recriam as camadas a partir da foto; os caminhos dentro deles são os da pasta de trabalho original e precisam ser ajustados antes de rodar.
 
 ## Pontos em aberto
 - **Crédito obrigatório:** a foto é CC BY 2.0 (ver `CREDITOS.md`); o crédito está no cartão final das duas versões, porque a ilustração também foi feita a partir dela.

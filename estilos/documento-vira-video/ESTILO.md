@@ -3,7 +3,7 @@ id: documento-vira-video
 Melhor para: aberturas e showreels de marca em que um documento, pedido ou roteiro vira filme; peças de 10 a 60 s com mergulhos de câmera e volta pelo mesmo ponto
 Formato: 16:9 · 32 s · referência a 60 fps (a cópia da galeria roda a 30 fps)
 Vídeo na galeria: galeria/videos/documento-vira-video.mp4
-Peça de partida: projeto/estilo.js
+Peça de partida: projeto/index.html (loop de 5 s que hospeda o estilo.js; o vídeo da galeria é a peça longa do canal, feita nesse estilo)
 
 ---
 

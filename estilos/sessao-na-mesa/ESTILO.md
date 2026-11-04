@@ -3,7 +3,7 @@ id: sessao-na-mesa
 Melhor para: contar uma sessão real entre a pessoa e o agente dela (pedido, trabalho, resposta, correção, elogio) como desenho animado em aquarela; bastidores, build in public, apresentação de agente
 Formato: 16:9 · 58,7 s na peça de exemplo (loop de 5 s na parede: pedido → reação → resposta arremessada) · 24 fps na origem (a cópia da galeria roda a 30 fps)
 Vídeo na galeria: galeria/videos/sessao-na-mesa.mp4
-Peça de partida: projeto/estilo.js
+Peça de partida: projeto/index.html (loop de 5 s que hospeda o estilo.js; o vídeo da galeria é a peça longa do canal, feita nesse estilo)
 
 ---
 

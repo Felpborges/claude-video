@@ -24,7 +24,7 @@ Peça de partida: projeto/index.html
 |---|---|---|---|
 | A | @stephanlivera, `prompt-motion.com/stephanlivera-df17a2`, baixado em `ref/stephan.mp4` | 15 s, 1920 × 1080, 60 qps, com som | "make a dynamic 15-second motion graphics video that shows what an incredible motion designer you are, like it's your showreel for a résumé. go all out." (Opus 5.5, esforço máximo) |
 | B | @himanshutwtxs, `prompt-motion.com/himanshutwtxs-5f4b43`, baixado em `ref/himanshu.mp4` | 15 s, 1920 × 1080, 30 qps, com som | o mesmo prompt, em uma tentativa só |
-| C | skill swiss-kinetic (`~/.claude/skills/skill-teste-motion/styles/swiss-kinetic/`) | 14 s, 1920 × 1080, 30 qps | spec em números no `STYLE.md` |
+| C | o estilo `swiss-kinetic` da skill Claude Video 2.0 (ficha e peça do autor, não distribuídas aqui) | 14 s, 1920 × 1080, 30 qps | spec em números no `STYLE.md` |
 
 Os filmes são dos autores; aqui só medimos.
 
