@@ -1,6 +1,6 @@
 ---
 name: claude-video
-description: Faz motion graphics com acabamento de estúdio no Claude Code, em português. A pessoa escolhe um estilo numa galeria de vídeos reais (ou cola uma referência própria), responde 5 perguntas e recebe o MP4. O Claude faz a perícia da referência (ritmo, paleta, traço, movimentos de assinatura, medidos em números), mostra cards parados para aprovação, constrói a peça em HTML + GSAP, renderiza com HyperFrames e confere o resultado olhando os frames e comparando o movimento com a referência. Aceita fotos e clipes da pessoa e clipes de IA do Higgsfield (só com a chave dela e depois de mostrar o custo). Use quando a pessoa pedir "faz um motion graphic", "uma abertura pro meu vídeo", "uma vinheta", "um loop pra tela", "um vídeo nesse estilo", "recria esse motion pra X", ou colar um link ou vídeo de referência e pedir algo parecido.
+description: Faz motion graphics com acabamento de estúdio no Claude Code, em português. A pessoa escolhe um estilo numa galeria de vídeos reais (ou cola uma referência própria), responde 5 perguntas e recebe o MP4. O Claude faz a perícia da referência (ritmo, paleta, traço, movimentos de assinatura, medidos em números), mostra cards parados para aprovação, constrói a peça em HTML + GSAP, renderiza com HyperFrames e confere o resultado olhando os frames e comparando o movimento com a referência. Aceita fotos e clipes da pessoa e clipes de IA do Higgsfield (só com a chave dela e depois de mostrar o custo). Use quando a pessoa pedir "faz um motion graphic", "uma abertura pro meu vídeo", "uma vinheta", "um loop pra tela", "um vídeo nesse estilo", "recria esse motion pra X", ou colar um link ou vídeo de referência e pedir algo parecido. Também quando pedir "abre a galeria de estilos" ou "atualiza a skill claude-video".
 license: MIT
 metadata:
   author: Felipe Borges
@@ -26,11 +26,20 @@ linha, **peça confirmação antes de instalar** e pare até ela responder. Depo
 Recomende modelo e esforço altos (Opus, esforço alto) para a construção: a perícia sai igual em qualquer
 modelo, mas o desenho da cena nova sai mais fraco com modelo menor.
 
+Se a pessoa pedir para **atualizar a skill**: `git -C $SKILL pull --ff-only` (ou, sem git, rode de novo o
+instalador `bash $SKILL/instalar.sh`). Depois diga que ela precisa abrir uma conversa nova.
+
 ## Etapa A: escolher o estilo
 
-1. Abra a galeria em segundo plano (ela serve só nesta máquina, em 127.0.0.1, e desliga sozinha em 90 minutos):
+1. Abra a galeria com o script, rodando como um comando normal (ele volta na hora; não precisa de `&`, `nohup`
+   nem de rodar em segundo plano por fora):
    `python3 $SKILL/scripts/galeria.py`
-   Ela abre no navegador e imprime o endereço. Diga o endereço também, caso não tenha aberto.
+   O script serve a pasta só nesta máquina (127.0.0.1) num processo separado que fica no ar por 4 horas,
+   reaproveita a galeria se ela já estiver no ar, abre o navegador e imprime o endereço. Diga o endereço também,
+   caso não tenha aberto. **Nunca abra `galeria/index.html` direto como arquivo** (com `open`, duplo clique ou
+   `file://`): sem o servidor os vídeos podem não carregar. Se a pessoa disser que a galeria abriu vazia, sem
+   vídeos ou com um aviso amarelo no topo, rode o script de novo e peça para ela recarregar a página no endereço
+   impresso. Se a pessoa só pediu para abrir a galeria, pare aqui depois de abrir.
 2. Diga, em uma mensagem curta:
    "Sua galeria de estilos está aberta: <endereço>. Cada tile é um vídeo real feito em código. Aperta
    'Usar este estilo' no que você gostar e cola aqui. Ou me manda de 1 a 3 links ou vídeos de referência seus."

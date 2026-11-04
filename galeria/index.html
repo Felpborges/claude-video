@@ -31,6 +31,11 @@
   .seg button.on { background: var(--ink); color: #fff; }
   .seg button:disabled { opacity: 0.35; cursor: default; }
 
+  /* aviso: só aparece quando a galeria não consegue carregar os vídeos ou o servidor para */
+  #aviso { padding: 14px 64px; background: var(--marigold); color: var(--ink); font-size: 15px; line-height: 1.55; border-bottom: 1px solid var(--line2); }
+  #aviso[hidden] { display: none; }
+  #aviso code { font-family: var(--mono); font-size: 13px; background: rgba(255,255,255,0.75); padding: 2px 7px; border-radius: 6px; white-space: nowrap; }
+
   /* herói */
   .wrap { max-width: 1680px; margin: 0 auto; padding: 0 64px 120px; }
   .hero { padding: 104px 0 72px; display: grid; grid-template-columns: 1.3fr 1fr; gap: 64px; align-items: end; border-bottom: 1px solid var(--line); margin-bottom: 64px; }
@@ -101,14 +106,14 @@
   @media (max-width: 1100px) {
     .grid { grid-template-columns: 1fr; }
     .hero { grid-template-columns: 1fr; gap: 28px; padding-top: 64px; }
-    .bar, .wrap { padding-left: 24px; padding-right: 24px; }
+    .bar, .wrap, #aviso { padding-left: 24px; padding-right: 24px; }
     .ghead { flex-direction: column; } .ghead p { text-align: left; }
     .own { flex-direction: column; align-items: flex-start; padding: 32px; }
   }
   @media (max-width: 640px) {
     .meta { flex-direction: column; }
     .bar { flex-wrap: wrap; gap: 10px; padding: 12px 16px; } .controls { width: 100%; justify-content: flex-start; }
-    .wrap { padding-left: 16px; padding-right: 16px; } .hero h1 { font-size: 56px; } .ghead h2 { font-size: 32px; }
+    .wrap, #aviso { padding-left: 16px; padding-right: 16px; } .hero h1 { font-size: 56px; } .ghead h2 { font-size: 32px; }
   }
 </style>
 </head>
@@ -119,6 +124,7 @@
     <div class="seg" id="every"><button data-v="graphic" class="on">Tudo em grafismo</button><button data-v="media">Tudo com mídia real</button></div>
   </div>
 </div>
+<div id="aviso" hidden></div>
 
 <div class="wrap">
   <section class="hero">
@@ -149,9 +155,18 @@
 <script>
 const COPY_ICON = '<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="5" y="5" width="9" height="9" rx="2"/><path d="M11 5V3.5A1.5 1.5 0 0 0 9.5 2h-6A1.5 1.5 0 0 0 2 3.5v6A1.5 1.5 0 0 0 3.5 11H5"/></svg>';
 const CHECK_ICON = '<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 8.5l3.2 3L13 4.5"/></svg>';
-const big = document.getElementById('big'), bv = big.querySelector('video'), toast = document.getElementById('toast');
+const big = document.getElementById('big'), bv = big.querySelector('video'), toast = document.getElementById('toast'), aviso = document.getElementById('aviso');
 const tiles = [];
 let toastTimer;
+// A galeria é feita para ser servida pelo scripts/galeria.py. Aberta como arquivo (file://), os vídeos podem não carregar.
+const SERVIDO = location.protocol === 'http:' || location.protocol === 'https:';
+const COMO_ABRIR = 'No Claude Code, diga: <b>abre a galeria de estilos</b>. Ou, no Terminal: <code>python3 ~/.claude/skills/claude-video/scripts/galeria.py</code>';
+
+function avisar(html, motivo) { aviso.innerHTML = html; aviso.dataset.motivo = motivo || ''; aviso.hidden = false; }
+function silenciar() { aviso.hidden = true; aviso.dataset.motivo = ''; }
+window.addEventListener('error', e => {
+  if (!document.querySelector('.tile')) avisar('A galeria não conseguiu montar a lista de estilos (' + esc(e.message || 'erro') + '). ' + COMO_ABRIR, 'erro');
+});
 
 function copyText(text) {
   const fallback = () => { const t = document.createElement('textarea'); t.value = text; document.body.appendChild(t); t.select();
@@ -172,21 +187,13 @@ function wireUse(btn, id) {
 function esc(s) { return String(s).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c])); }
 function segundos(n) { return String(n).replace('.', ',') + ' s'; }
 
-// Quais vídeos existem de fato? A listagem de videos/ (um GET que responde 200) evita pedir arquivos que não
-// estão lá, então um vídeo ainda não renderizado não gera erro no console. Sem servidor, tenta direto.
-async function listarVideos() {
-  try {
-    const r = await fetch('videos/', { cache: 'no-cache' });
-    if (!r.ok) return null;
-    const html = await r.text();
-    const found = new Set();
-    for (const m of html.matchAll(/href="([^"]+\.mp4)"/g)) found.add(decodeURIComponent(m[1].split('/').pop()));
-    return found;
-  } catch (e) { return null; }
-}
-
-function montar(existe) {
-  const have = f => existe ? existe.has(f) : true;
+// Monta os tiles na hora, sem esperar nada da rede. Um vídeo que não carregar vira um tile só com o nome;
+// se nenhum carregar, o aviso no topo diz como abrir a galeria do jeito certo.
+function montar() {
+  if (typeof ESTILOS === 'undefined' || !Array.isArray(ESTILOS) || !ESTILOS.length) {
+    avisar('A lista de estilos (estilos.js) não carregou. ' + COMO_ABRIR, 'erro');
+    return;
+  }
   const familias = [];
   ESTILOS.forEach(E => { if (!familias.includes(E.familia)) familias.push(E.familia); });
   const host = document.getElementById('familias');
@@ -198,6 +205,7 @@ function montar(existe) {
     sec.querySelector('.grid').dataset.familia = f;
   });
 
+  let semVideo = 0;
   ESTILOS.forEach(E => {
     const t = document.createElement('article'); t.className = 'tile';
     t.innerHTML = `<div class="screen"></div>
@@ -207,21 +215,11 @@ function montar(existe) {
     const screen = t.querySelector('.screen');
     wireUse(t.querySelector('.use'), E.id);
     const files = { graphic: `${E.id}.mp4`, media: `${E.id}-media.mp4` };
-    const temMedia = !!E.media && have(files.media);
-    const temVideo = have(files.graphic);
+    const temMedia = !!E.media;
 
     const chips = document.createElement('div'); chips.className = 'chips';
     chips.innerHTML = `<span class="chip">${esc(E.formato)}</span>${E.loop ? '<span class="chip">loop</span>' : ''}`;
     screen.appendChild(chips);
-
-    if (!temVideo) {
-      // ainda sem vídeo renderizado: o tile mostra só o nome
-      const only = document.createElement('div'); only.className = 'only-name'; only.textContent = E.nome;
-      screen.appendChild(only);
-      tiles.push({ E, show: () => {}, t });
-      document.querySelector(`.grid[data-familia="${CSS.escape(E.familia)}"]`).appendChild(t);
-      return;
-    }
     screen.classList.add('has-video');
 
     let sw = null;
@@ -233,18 +231,33 @@ function montar(existe) {
 
     // Dois vídeos empilhados tocam em sincronia. Virar só troca qual deles você vê, então o loop nunca reinicia.
     const vids = {}; let cur = null, visible = false;
+    function soNome() {
+      // o vídeo principal não carregou: o tile mostra só o nome
+      if (screen.dataset.estado === 'sem-video') return;
+      screen.dataset.estado = 'sem-video';
+      screen.classList.remove('has-video');
+      Object.values(vids).forEach(v => v.remove());
+      if (sw) sw.remove();
+      const only = document.createElement('div'); only.className = 'only-name'; only.textContent = E.nome;
+      screen.appendChild(only);
+      semVideo++;
+      if (semVideo === ESTILOS.length) {
+        avisar('Os vídeos da galeria não carregaram' + (SERVIDO ? '' : ' porque a página foi aberta como arquivo, sem o servidor da skill') + '. ' + COMO_ABRIR, 'sem-video');
+      }
+    }
     function make(kind) {
       const v = document.createElement('video');
       Object.assign(v, { src: 'videos/' + files[kind], muted: true, loop: true, playsInline: true, preload: 'auto' });
       v.setAttribute('muted', ''); v.style.opacity = 0;
       v.onclick = () => { bv.src = v.currentSrc || ('videos/' + files[kind]); big.style.display = 'flex'; bv.currentTime = v.currentTime; bv.muted = true; bv.play().catch(() => {}); };
-      v.onerror = () => { if (kind === 'media' && sw) { sw.querySelector('[data-v=media]').disabled = true; } };
+      v.onerror = () => { if (kind === 'media') { if (sw) sw.querySelector('[data-v=media]').disabled = true; } else soNome(); };
       screen.insertBefore(v, screen.firstChild); vids[kind] = v;
       if (visible) v.play().catch(() => {});
       return v;
     }
     function show(kind) {
       if (kind === 'media' && !temMedia) return;
+      if (screen.dataset.estado === 'sem-video') return;
       const next = vids[kind] || make(kind);
       if (cur && cur !== next && next.readyState >= 1) next.currentTime = cur.currentTime % (next.duration || 1e9);
       Object.values(vids).forEach(v => { v.style.opacity = v === next ? 1 : 0; v.style.pointerEvents = v === next ? 'auto' : 'none'; });
@@ -273,6 +286,22 @@ function montar(existe) {
   });
 }
 
+// Com servidor: a cada 20 s confere se ele continua vivo. Se parar (ele desliga sozinho depois de algumas horas),
+// o aviso no topo diz como reabrir. Como arquivo (file://) não há servidor para conferir.
+if (SERVIDO) {
+  let faltas = 0;
+  setInterval(async () => {
+    try {
+      const r = await fetch('_ok', { cache: 'no-store' });
+      if (!r.ok) throw new Error('sem resposta');
+      faltas = 0;
+      if (aviso.dataset.motivo === 'parou') silenciar();
+    } catch (e) {
+      if (++faltas >= 2) avisar('A galeria parou (ela desliga sozinha depois de algumas horas). ' + COMO_ABRIR + ' e depois recarregue esta página.', 'parou');
+    }
+  }, 20000);
+}
+
 wireUse(document.querySelector('.own .use'), 'minha própria referência');
 big.onclick = e => { if (e.target === big) { bv.pause(); big.style.display = 'none'; } };
 document.addEventListener('keydown', e => { if (e.key === 'Escape') { bv.pause(); big.style.display = 'none'; } });
@@ -280,7 +309,7 @@ document.querySelectorAll('#every button').forEach(b => b.onclick = () => {
   document.querySelectorAll('#every button').forEach(x => x.classList.toggle('on', x === b));
   tiles.forEach(x => x.show(b.dataset.v === 'media' && x.temMedia ? 'media' : 'graphic'));
 });
-listarVideos().then(montar);
+montar();
 </script>
 </body>
 </html>

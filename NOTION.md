@@ -1,14 +1,26 @@
 # claude-video (skill grátis)
 
-*Texto da página do Notion, pronto para colar.*
+*Texto da página do Notion, pronto para colar. A página publicada é
+`claude-video · motion graphics com o Claude Code (skill grátis)`; este arquivo é o espelho dela.*
 
 ---
 
 Faça motion graphics com cara de estúdio no Claude Code, em português. Escolha um estilo numa galeria de
 vídeos reais, responda 5 perguntas e receba o seu MP4. Grátis, no plano normal do Claude.
 
-**Instalar:** cole este link numa conversa do Claude Code e diga "instala essa skill":
+**Instalar:** copie este link, cole numa conversa do Claude Code e diga "instala essa skill":
 https://github.com/Felpborges/claude-video
+
+Mande o link do GitHub, não o da página do Notion: o Claude Code não consegue ler páginas do Notion.
+
+**Plano B, sem o Claude Code** (Terminal no Mac ou Linux, Git Bash no Windows), uma linha só:
+
+```bash
+curl -fsSL https://raw.githubusercontent.com/Felpborges/claude-video/main/instalar.sh | bash
+```
+
+**Usar:** depois de instalar, abra uma conversa nova e diga "faz um motion graphic pra mim". A galeria abre no
+seu navegador.
 
 ---
 
@@ -70,12 +82,28 @@ comparação de movimento com a referência.
 
 ## Instalar em 3 passos
 
-1. Cole o link do repositório numa conversa do Claude Code e diga "instala essa skill". O Claude confere a sua
-   máquina (Node 22 ou mais novo, ffmpeg, Python 3) e pede confirmação antes de instalar o que faltar.
+1. Copie o link do repositório (https://github.com/Felpborges/claude-video, o do GitHub, não o desta página),
+   cole numa conversa do Claude Code e diga "instala essa skill". O Claude copia a skill, confere a sua máquina
+   (Node 22 ou mais novo, ffmpeg, Python 3) e pede confirmação antes de instalar o que faltar. Sem o Claude Code,
+   cole a linha do Plano B no Terminal.
 2. Só se quiser clipes de IA: crie uma conta em https://console.higgsfield.ai e coloque a chave num arquivo
    chamado `.env` na pasta do seu projeto, numa linha: `HIGGSFIELD_API_KEY=seu_id:seu_segredo`.
    Nunca cole a chave no chat.
 3. Abra uma conversa nova no Claude Code e diga: **faz um motion graphic pra mim**
+
+---
+
+## Perguntas frequentes (acréscimos)
+
+**Colei o link desta página no Claude Code e ele não conseguiu ler.** É normal: o Claude Code não lê páginas do
+Notion. Mande o link do GitHub e diga "instala essa skill", ou cole a linha do Plano B no Terminal.
+
+**A galeria abriu vazia, sem os vídeos.** Diga no Claude Code: "abre a galeria de estilos". Ele roda o script da
+skill (nunca abra o arquivo `index.html` direto) e imprime um endereço; recarregue a página nele. A galeria
+desliga sozinha depois de 4 horas; é só pedir de novo.
+
+**Como atualizo a skill?** Diga no Claude Code "atualiza a skill claude-video", ou rode de novo a linha do Plano
+B. Ela atualiza o que já está instalado.
 
 ---
 

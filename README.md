@@ -12,11 +12,27 @@ em créditos antes, e espera o seu "sim"). Funciona no plano normal do Claude.
 
 ## Instalar
 
-Cole o link deste repositório numa conversa do Claude Code e diga: **"instala essa skill"**.
-O Claude lê o `INSTALAR.md`, copia a skill para a pasta certa, confere o que a sua máquina já tem
-(Node 22 ou mais novo, ffmpeg, Python 3) e, se faltar algo, pede a sua confirmação antes de instalar.
+**Jeito 1 (recomendado):** copie o link deste repositório, https://github.com/Felpborges/claude-video, cole numa
+conversa do Claude Code e diga: **"instala essa skill"**. O Claude segue o [INSTALAR.md](INSTALAR.md), copia a
+skill para `~/.claude/skills/claude-video`, confere o que a sua máquina já tem (Node 22 ou mais novo, ffmpeg,
+Python 3) e, se faltar algo, pede a sua confirmação antes de instalar.
 
-Depois, numa conversa nova, diga: **"faz um motion graphic pra mim"**.
+**Jeito 2 (uma linha no Terminal, sem o Claude Code):** no Mac ou Linux abra o Terminal (no Windows, o Git Bash) e cole:
+
+```bash
+curl -fsSL https://raw.githubusercontent.com/Felpborges/claude-video/main/instalar.sh | bash
+```
+
+Isso baixa a skill para `~/.claude/skills/claude-video` (ou atualiza a que já está lá) e mostra o que falta na sua
+máquina. O mesmo comando atualiza a skill depois.
+
+Depois, numa conversa **nova** do Claude Code, diga: **"faz um motion graphic pra mim"**.
+
+> **Para o Claude Code, se a pessoa te mandou este link:** a instrução completa está em
+> https://raw.githubusercontent.com/Felpborges/claude-video/main/INSTALAR.md. Resumo: clone
+> `https://github.com/Felpborges/claude-video` em `~/.claude/skills/claude-video` (ou rode a linha do instalador
+> acima), rode `bash ~/.claude/skills/claude-video/scripts/checar.sh` e peça confirmação antes de instalar qualquer
+> coisa que faltar. Nunca peça chaves de API. No fim, peça para a pessoa abrir uma conversa nova.
 
 Só para clipes de IA: crie uma conta em https://console.higgsfield.ai e coloque a chave num arquivo
 chamado `.env` na pasta do seu projeto, numa linha: `HIGGSFIELD_API_KEY=seu_id:seu_segredo`.
@@ -46,7 +62,9 @@ comparação do movimento com a referência.
 
 Cada estilo é uma pasta em `estilos/` com `ESTILO.md` (a perícia pronta da referência: mecanismo, batidas,
 paleta, traço, metas de movimento, o que não pode), `LEIA-ME.md` (o que trocar e o que quebra) e `projeto/`
-(o código da peça de referência, como apoio). A galeria lista todos: `python3 ~/.claude/skills/claude-video/scripts/galeria.py`.
+(o código da peça de referência, como apoio). A galeria lista todos: `python3 ~/.claude/skills/claude-video/scripts/galeria.py`
+(é assim que a skill abre a galeria; não abra o `galeria/index.html` direto como arquivo, porque sem o servidor os
+vídeos podem não carregar).
 
 O Claude não copia a peça de referência. Ele entende o estilo e desenha a **sua** cena nele.
 
@@ -63,7 +81,7 @@ O Claude não copia a peça de referência. Ele entende o estilo e desenha a **s
 ## O que tem dentro
 
 - `SKILL.md` os passos que o Claude segue
-- `INSTALAR.md` o que o Claude faz quando você pede pra instalar
+- `INSTALAR.md` o que o Claude faz quando você pede pra instalar; `instalar.sh` o instalador de uma linha
 - `galeria/` a galeria de estilos e os vídeos
 - `estilos/` os estilos
 - `perguntas.md` as perguntas (edite à vontade) e `config.json` (um link opcional que o Claude cita no fim)
