@@ -8,9 +8,9 @@
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;800&family=JetBrains+Mono:wght@500&display=swap" />
 <style>
   :root {
-    /* Identidade AiVerso em modo midnight: papel como texto, azul como âncora, marigold como marca-texto, coral só na marca. */
-    --bg: #02093a; --surface: #0b1348; --line: rgba(246,245,244,0.10); --line2: rgba(246,245,244,0.18);
-    --text: #f6f5f4; --mute: #a9afc9; --faint: #6d7498; --accent: #0075de; --coral: #f64932; --marigold: #fff1cc; --ivory: #f6f5f4; --ink: #111111;
+    /* Identidade AiVerso: papel claro, tinta, azul como âncora, marigold como marca-texto, coral só na marca, cards brancos chapados. */
+    --bg: #f6f5f4; --surface: #ffffff; --line: rgba(17,17,17,0.10); --line2: rgba(17,17,17,0.18);
+    --text: #111111; --mute: #5c5a57; --faint: #8a8783; --accent: #0075de; --coral: #f64932; --marigold: #fff1cc; --ivory: #f6f5f4; --ink: #111111; --midnight: #02093a;
     --sans: 'Inter', system-ui, sans-serif; --mono: 'JetBrains Mono', ui-monospace, monospace;
     --tight: -0.04em;
   }
@@ -25,10 +25,10 @@
   .mark { font-weight: 800; font-size: 22px; letter-spacing: var(--tight); white-space: nowrap; }
   .mark i { font-style: normal; color: var(--coral); }
   .controls { display: flex; gap: 12px; flex-wrap: wrap; justify-content: flex-end; }
-  .seg { display: inline-flex; padding: 4px; border-radius: 999px; background: rgba(255,255,255,0.05); border: 1px solid var(--line); }
+  .seg { display: inline-flex; padding: 4px; border-radius: 999px; background: #fff; border: 1px solid var(--line); }
   .seg button { padding: 8px 16px; border-radius: 999px; font-size: 13px; font-weight: 500; color: var(--mute); transition: color .2s, background .2s; white-space: nowrap; }
   .seg button:hover { color: var(--text); }
-  .seg button.on { background: var(--ivory); color: var(--ink); }
+  .seg button.on { background: var(--ink); color: #fff; }
   .seg button:disabled { opacity: 0.35; cursor: default; }
 
   /* herói */
@@ -56,18 +56,19 @@
   .screen { position: relative; aspect-ratio: 16 / 9; border-radius: 18px; overflow: hidden; background: var(--surface);
     box-shadow: 0 0 0 1px var(--line); transition: transform .5s cubic-bezier(.2,.8,.2,1), box-shadow .3s; }
   .tile:hover .screen { box-shadow: 0 0 0 2px var(--accent); }
+  .screen { background: #fff; }
   .screen.has-video { cursor: zoom-in; }
   .tile:hover .screen { transform: translateY(-4px); }
   /* 1:1 e 9:16 cabem inteiros no tile: contain sobre fundo escuro, nunca recorta */
-  .screen video { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: contain; background: var(--surface); display: block; transition: opacity .18s linear; }
+  .screen video { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: contain; background: #fff; display: block; transition: opacity .18s linear; }
   .screen .only-name { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; padding: 32px; text-align: center;
     font-weight: 800; font-size: 36px; line-height: 1.05; letter-spacing: var(--tight); color: var(--mute); }
-  .screen .seg { position: absolute; left: 16px; top: 16px; z-index: 2; background: rgba(2,9,58,0.78); border-color: rgba(246,245,244,0.14); }
+  .screen .seg { position: absolute; left: 16px; top: 16px; z-index: 2; background: rgba(246,245,244,0.92); border-color: var(--line); }
   .screen .seg button { padding: 7px 14px; font-size: 12.5px; color: rgba(255,255,255,0.75); }
-  .screen .seg button.on { background: var(--ivory); color: var(--ink); }
+  .screen .seg button.on { background: var(--ink); color: #fff; }
   .chips { position: absolute; right: 16px; top: 16px; z-index: 2; display: flex; gap: 8px; }
-  .chip { padding: 7px 12px; border-radius: 999px; font-size: 12px; color: rgba(255,255,255,0.8); font-family: var(--mono);
-    background: rgba(2,9,58,0.78); border: 1px solid rgba(246,245,244,0.14); }
+  .chip { padding: 7px 12px; border-radius: 999px; font-size: 12px; color: var(--ink); font-family: var(--mono);
+    background: rgba(246,245,244,0.92); border: 1px solid var(--line); }
   .meta { display: flex; align-items: flex-start; justify-content: space-between; gap: 24px; }
   .meta h3 { font-weight: 800; font-size: 28px; line-height: 1.05; letter-spacing: var(--tight); }
   .meta .chamada { margin-top: 8px; color: var(--mute); font-size: 14.5px; line-height: 1.45; }
@@ -79,15 +80,17 @@
   .use svg { width: 15px; height: 15px; }
 
   /* referência própria */
-  .own { margin-top: 24px; padding: 48px; border-radius: 20px; border: 1px dashed var(--line2); display: flex; justify-content: space-between; align-items: center; gap: 32px; }
+  .own { margin-top: 24px; padding: 48px; border-radius: 20px; background: #fff; border: 1px solid var(--line); display: flex; justify-content: space-between; align-items: center; gap: 32px; }
   .own h2 { font-weight: 800; font-size: 36px; letter-spacing: var(--tight); line-height: 1; }
   .own p { color: var(--mute); font-size: 15.5px; line-height: 1.6; max-width: 640px; margin-top: 8px; }
-  .own .use { background: transparent; color: var(--text); box-shadow: inset 0 0 0 1px var(--line2); }
+  .own .use { background: var(--ink); color: #fff; }
+  .own .use:hover { background: #000; }
   footer { color: var(--faint); font-size: 13px; padding-top: 64px; }
 
   /* lightbox + aviso */
-  #big { position: fixed; inset: 0; z-index: 30; background: rgba(2,9,58,0.96); display: none; align-items: center; justify-content: center; padding: 48px; }
-  #big video { max-width: 92vw; max-height: 88vh; border-radius: 14px; box-shadow: 0 0 0 1px var(--line); background: var(--surface); }
+  /* o único beat midnight da página: a tela grande */
+  #big { position: fixed; inset: 0; z-index: 30; background: rgba(2,9,58,0.97); display: none; align-items: center; justify-content: center; padding: 48px; }
+  #big video { max-width: 92vw; max-height: 88vh; border-radius: 14px; background: #fff; }
   #toast { position: fixed; left: 50%; bottom: 40px; transform: translate(-50%, 24px); opacity: 0; z-index: 40; padding: 14px 22px; border-radius: 999px;
     background: var(--marigold); color: var(--ink); font-size: 14.5px; font-weight: 500; transition: opacity .25s, transform .35s cubic-bezier(.2,.8,.2,1); pointer-events: none; }
   #toast.on { opacity: 1; transform: translate(-50%, 0); }
